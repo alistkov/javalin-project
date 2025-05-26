@@ -4,6 +4,8 @@ rendering = "6.6.0"
 slf4j = "2.0.17"
 jte = "3.2.1"
 junit-bom = "5.12.2"
+datafaker = "2.4.2"
+javalin-bundle = "6.6.0"
 
 [libraries]
 javalin = { module = "io.javalin:javalin", version.ref = "javalin" }
@@ -12,3 +14,5 @@ slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 jte = { module = "gg.jte:jte", version.ref = "jte" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit-bom" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker" }
+javalin-bundle = { module = "io.javalin:javalin-bundle", version.ref = "javalin-bundle" }

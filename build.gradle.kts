@@ -22,6 +22,9 @@ dependencies {
     implementation(libs.javalin.rendering)
     implementation(libs.slf4j.simple)
     implementation(libs.jte)
+    implementation(libs.datafaker)
+    implementation(libs.javalin.bundle)
+
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
 }
