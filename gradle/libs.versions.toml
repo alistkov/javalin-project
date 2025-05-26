@@ -1,0 +1,14 @@
+[versions]
+javalin = "6.6.0"
+rendering = "6.6.0"
+slf4j = "2.0.17"
+jte = "3.2.1"
+junit-bom = "5.12.2"
+
+[libraries]
+javalin = { module = "io.javalin:javalin", version.ref = "javalin" }
+javalin-rendering = { module = "io.javalin:javalin-rendering", version.ref = "rendering" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+jte = { module = "gg.jte:jte", version.ref = "jte" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit-bom" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
