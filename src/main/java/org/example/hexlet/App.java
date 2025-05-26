@@ -12,6 +12,13 @@ public class App {
         app.get("/phones", ctx -> ctx.json(Data.getPhones()));
         app.get("/domains", ctx -> ctx.json(Data.getDomains()));
 
+        app.get("/users", ctx -> {
+           var page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
+           var per = ctx.queryParamAsClass("per", Integer.class).getOrDefault(5);
+           var offset = (page - 1) * per;
+           ctx.json(Data.getUsers().subList(offset, offset + per));
+        });
+
         return app;
     }
 
