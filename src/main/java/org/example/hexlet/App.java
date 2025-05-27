@@ -5,10 +5,15 @@ import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
 import org.example.hexlet.dto.users.UserPage;
 import org.example.hexlet.dto.users.UsersPage;
+import org.example.hexlet.model.User;
+
+import java.util.List;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class App {
+    private static final List<User> USERS = Data.getUsers();
+
     public static Javalin getApp() {
         var app = Javalin.create(
             config -> {
@@ -22,13 +27,13 @@ public class App {
         app.get("/domains", ctx -> ctx.json(Data.getDomains()));
 
         app.get("/users", ctx -> {
-            var page = new UsersPage(Data.getUsers());
+            var page = new UsersPage(USERS);
            ctx.render("users/index.jte", model("page", page));
         });
 
         app.get("/users/{id}", ctx -> {
             var id = ctx.pathParamAsClass("id", Long.class).get();
-            var user = Data.getUsers().stream()
+            var user = USERS.stream()
                 .filter(u -> u.getId() == id)
                 .findFirst()
                 .orElse(null);
