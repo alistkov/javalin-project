@@ -9,12 +9,9 @@ import net.datafaker.Faker;
 import org.example.hexlet.model.User;
 
 public class Data {
-    private static final int ITEMS_COUNT = 10;
+    private static final int ITEMS_COUNT = 30;
     private static final Random RANDOM = new Random(123);
-    private static final int USERS_COUNT = 30;
-    private static final int COMPANIES_COUNT = 30;
-
-    private static int idCounter = USERS_COUNT;
+    private static long idCounter = ITEMS_COUNT;
 
     public static List<String> getPhones() {
         Faker faker = new Faker(new Locale("en"), RANDOM);
@@ -60,9 +57,8 @@ public class Data {
         return users;
     }
 
-    public static String getNextId() {
-        int id = ++idCounter;
-        return Integer.toString(id);
+    public static long getNextId() {
+        return ++idCounter;
     }
 
     public static List<Map<String, String>> getCompanies() {
@@ -70,14 +66,14 @@ public class Data {
         Faker faker = new Faker(random);
 
         List<String> ids = IntStream
-            .range(1, COMPANIES_COUNT + 1)
+            .range(1, ITEMS_COUNT + 1)
             .mapToObj(i -> Integer.toString(i))
             .collect(Collectors.toList());
         Collections.shuffle(ids, random);
 
         List<Map<String, String>> companies = new ArrayList<>();
 
-        for (int i = 0; i < COMPANIES_COUNT; i++) {
+        for (int i = 0; i < ITEMS_COUNT; i++) {
             Map<String, String> company = new HashMap<>();
             company.put("id", ids.get(i));
             company.put("name", faker.company().name());

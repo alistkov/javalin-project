@@ -3,6 +3,10 @@
 
 @template.layout.page(
 content = @`
+    <form action="/users" method="get">
+        <input type="search" name="term" value="${page.getTerm()}" />
+        <input type="submit" value="Search" />
+    </form>
     @if(page.getUsers().isEmpty())
         <p>Пока не добавлено ни одного курса</p>
     @else

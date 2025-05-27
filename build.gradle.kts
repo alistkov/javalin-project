@@ -25,6 +25,7 @@ dependencies {
     implementation(libs.jte)
     implementation(libs.datafaker)
     implementation(libs.javalin.bundle)
+    implementation(libs.commons.lang)
 
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)

@@ -3,9 +3,11 @@ package org.example.hexlet;
 import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
+import org.apache.commons.lang3.StringUtils;
 import org.example.hexlet.dto.users.UserPage;
 import org.example.hexlet.dto.users.UsersPage;
 import org.example.hexlet.model.User;
+
 
 import java.util.List;
 
@@ -27,8 +29,13 @@ public class App {
         app.get("/domains", ctx -> ctx.json(Data.getDomains()));
 
         app.get("/users", ctx -> {
-            var page = new UsersPage(USERS);
-           ctx.render("users/index.jte", model("page", page));
+            var term = ctx.queryParam("term");
+            var users = term == null ? USERS : USERS.stream()
+                    .filter(u -> StringUtils.startsWithIgnoreCase(u.getFirstName(), term))
+                    .toList();
+            var page = new UsersPage(users, term);
+
+            ctx.render("users/index.jte", model("page", page));
         });
 
         app.get("/users/{id}", ctx -> {

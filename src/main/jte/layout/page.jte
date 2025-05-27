@@ -12,12 +12,18 @@
 </head>
 <body class="bg-red">
     <header>
-        <a class="navbar-item" href="/">
-            Home
-        </a>
-        <a class="navbar-item" href="/users">
-            Users
-        </a>
+        <nav>
+            <div>
+                <ul>
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li >
+                        <a href="/users">Users</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </header>
     <main>
         ${content}
