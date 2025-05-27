@@ -3,8 +3,10 @@ package org.example.hexlet;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import net.datafaker.Faker;
+import org.example.hexlet.model.User;
 
 public class Data {
     private static final int ITEMS_COUNT = 10;
@@ -34,23 +36,24 @@ public class Data {
         return domains;
     }
 
-    public static List<Map<String, String>> getUsers() {
+    public static List<User> getUsers() {
         Random random = new Random(123);
         Faker faker = new Faker(new Locale("en"), random);
 
-        List<String> ids = IntStream
-            .range(1, USERS_COUNT + 1)
-            .mapToObj(i -> Integer.toString(i))
+        List<Long> ids = LongStream
+            .range(1, ITEMS_COUNT + 1)
+            .boxed()
             .collect(Collectors.toList());
         Collections.shuffle(ids, random);
 
-        List<Map<String, String>> users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
 
-        for (int i = 0; i < USERS_COUNT; i++) {
-            Map<String, String> user = new HashMap<>();
-            user.put("id", ids.get(i));
-            user.put("firstName", faker.name().firstName());
-            user.put("lastName", faker.name().lastName());
+        for (int i = 0; i < ITEMS_COUNT; i++) {
+            var id = ids.get(i);
+            var firstName = faker.name().firstName();
+            var lastName = faker.name().lastName();
+            var email = faker.internet().emailAddress();
+            User user = new User(id, firstName, lastName, email);
             users.add(user);
         }
 
