@@ -1,6 +1,7 @@
 package org.example.hexlet;
 
 import io.javalin.Javalin;
+import io.javalin.http.NotFoundResponse;
 
 public class App {
     public static Javalin getApp() {
@@ -18,6 +19,18 @@ public class App {
            var offset = (page - 1) * per;
            ctx.json(Data.getUsers().subList(offset, offset + per));
         });
+
+        app.get("/companies/{id}", ctx -> {
+            var id = ctx.pathParam("id");
+            var company = Data.getCompanies().stream()
+                .filter(c -> c.get("id").equals(id))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundResponse("Company with id #" + id + " not found"));
+
+            ctx.json(company);
+        });
+
+        app.get("/companies", ctx -> ctx.json(Data.getCompanies()));
 
         return app;
     }

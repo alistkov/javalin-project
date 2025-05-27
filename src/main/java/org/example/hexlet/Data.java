@@ -10,6 +10,7 @@ public class Data {
     private static final int ITEMS_COUNT = 10;
     private static final Random RANDOM = new Random(123);
     private static final int USERS_COUNT = 30;
+    private static final int COMPANIES_COUNT = 30;
 
     private static int idCounter = USERS_COUNT;
 
@@ -59,5 +60,28 @@ public class Data {
     public static String getNextId() {
         int id = ++idCounter;
         return Integer.toString(id);
+    }
+
+    public static List<Map<String, String>> getCompanies() {
+        Random random = new Random(123);
+        Faker faker = new Faker(random);
+
+        List<String> ids = IntStream
+            .range(1, COMPANIES_COUNT + 1)
+            .mapToObj(i -> Integer.toString(i))
+            .collect(Collectors.toList());
+        Collections.shuffle(ids, random);
+
+        List<Map<String, String>> companies = new ArrayList<>();
+
+        for (int i = 0; i < COMPANIES_COUNT; i++) {
+            Map<String, String> company = new HashMap<>();
+            company.put("id", ids.get(i));
+            company.put("name", faker.company().name());
+            company.put("phone", faker.phoneNumber().phoneNumber());
+            companies.add(company);
+        }
+
+        return companies;
     }
 }
