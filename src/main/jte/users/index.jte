@@ -8,7 +8,7 @@ content = @`
         <input type="submit" value="Search" />
     </form>
     @if(page.getUsers().isEmpty())
-        <p>Пока не добавлено ни одного курса</p>
+        <p>Пока не добавлено ни одного пользователя</p>
     @else
         <table>
             <tr>
@@ -27,5 +27,8 @@ content = @`
             @endfor
         </table>
     @endif
+    <button>
+        <a href="/users/build">Add user</a>
+    </button>
 `
 )

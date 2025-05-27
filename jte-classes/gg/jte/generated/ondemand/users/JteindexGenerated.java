@@ -3,7 +3,7 @@ import org.example.hexlet.dto.users.UsersPage;
 @SuppressWarnings("unchecked")
 public final class JteindexGenerated {
 	public static final String JTE_NAME = "users/index.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,1,1,1,3,3,5,5,7,7,7,7,7,7,7,7,7,10,10,12,12,20,20,22,22,22,23,23,23,24,24,24,25,25,25,25,27,27,29,29,30,30,30,30,30,1,1,1,1};
+	public static final int[] JTE_LINE_INFO = {0,0,1,1,1,1,3,3,5,5,7,7,7,7,7,7,7,7,7,10,10,12,12,20,20,22,22,22,23,23,23,24,24,24,25,25,25,25,27,27,29,29,33,33,33,33,33,1,1,1,1};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, UsersPage page) {
 		jteOutput.writeContent("\n");
 		gg.jte.generated.ondemand.layout.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -19,7 +19,7 @@ public final class JteindexGenerated {
 				}
 				jteOutput.writeContent(" />\n        <input type=\"submit\" value=\"Search\" />\n    </form>\n    ");
 				if (page.getUsers().isEmpty()) {
-					jteOutput.writeContent("\n        <p>Пока не добавлено ни одного курса</p>\n    ");
+					jteOutput.writeContent("\n        <p>Пока не добавлено ни одного пользователя</p>\n    ");
 				} else {
 					jteOutput.writeContent("\n        <table>\n            <tr>\n                <th>Name</th>\n                <th>Last name</th>\n                <th>Email</th>\n                <th>Link</th>\n            </tr>\n            ");
 					for (var user : page.getUsers()) {
@@ -40,7 +40,7 @@ public final class JteindexGenerated {
 					}
 					jteOutput.writeContent("\n        </table>\n    ");
 				}
-				jteOutput.writeContent("\n");
+				jteOutput.writeContent("\n    <button>\n        <a href=\"/users/build\">Add user</a>\n    </button>\n");
 			}
 		});
 	}

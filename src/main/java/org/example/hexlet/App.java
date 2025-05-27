@@ -7,15 +7,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.example.hexlet.dto.users.UserPage;
 import org.example.hexlet.dto.users.UsersPage;
 import org.example.hexlet.model.User;
+import org.example.hexlet.repository.UserRepository;
+import org.example.hexlet.util.Security;
 
 
 import java.util.List;
+import java.util.Objects;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class App {
-    private static final List<User> USERS = Data.getUsers();
-
     public static Javalin getApp() {
         var app = Javalin.create(
             config -> {
@@ -25,45 +26,39 @@ public class App {
         );
 
         app.get("/", ctx -> ctx.render("index.jte"));
-        app.get("/phones", ctx -> ctx.json(Data.getPhones()));
-        app.get("/domains", ctx -> ctx.json(Data.getDomains()));
 
         app.get("/users", ctx -> {
             var term = ctx.queryParam("term");
-            var users = term == null ? USERS : USERS.stream()
-                    .filter(u -> StringUtils.startsWithIgnoreCase(u.getFirstName(), term))
-                    .toList();
-            var page = new UsersPage(users, term);
+            var users = term == null ? UserRepository.getEntities() : UserRepository.getEntities().stream()
+                .filter(u -> StringUtils.startsWithIgnoreCase(u.getFirstName(), term))
+                .toList();
 
+            var page = new UsersPage(users, term);
             ctx.render("users/index.jte", model("page", page));
         });
 
+        app.post("/users", ctx -> {
+            var name = StringUtils.capitalize(Objects.requireNonNull(ctx.formParam("firstName")).trim());
+            var lastName = StringUtils.capitalize(Objects.requireNonNull(ctx.formParam("lastName")).trim());
+            var email = Objects.requireNonNull(ctx.formParam("email")).trim().toLowerCase();
+            var password = Security.encrypt(Objects.requireNonNull(ctx.formParam("password")));
+
+            var user = new User(name, lastName, email, password);
+            UserRepository.save(user);
+
+            ctx.redirect("/users");
+        });
+
+        app.get("/users/build", ctx -> ctx.render("users/build.jte"));
+
         app.get("/users/{id}", ctx -> {
             var id = ctx.pathParamAsClass("id", Long.class).get();
-            var user = USERS.stream()
-                .filter(u -> u.getId() == id)
-                .findFirst()
-                .orElse(null);
-
-            if (user == null) {
-                throw new NotFoundResponse("User with id #" + id + " not found");
-            }
+            var user = UserRepository.find(id)
+                .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
 
             var page = new UserPage(user);
             ctx.render("users/show.jte", model("page", page));
         });
-
-        app.get("/companies/{id}", ctx -> {
-            var id = ctx.pathParam("id");
-            var company = Data.getCompanies().stream()
-                .filter(c -> c.get("id").equals(id))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundResponse("Company with id #" + id + " not found"));
-
-            ctx.json(company);
-        });
-
-        app.get("/companies", ctx -> ctx.json(Data.getCompanies()));
 
         return app;
     }
