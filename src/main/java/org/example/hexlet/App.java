@@ -3,15 +3,21 @@ package org.example.hexlet;
 import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
+import io.javalin.validation.ValidationException;
 import org.apache.commons.lang3.StringUtils;
+import org.example.hexlet.dto.articles.ArticlesPage;
+import org.example.hexlet.dto.articles.BuildArticlePage;
 import org.example.hexlet.dto.users.UserPage;
 import org.example.hexlet.dto.users.UsersPage;
+import org.example.hexlet.model.Article;
 import org.example.hexlet.model.User;
+import org.example.hexlet.repository.ArticleRepository;
 import org.example.hexlet.repository.UserRepository;
 import org.example.hexlet.util.Security;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
@@ -58,6 +64,40 @@ public class App {
 
             var page = new UserPage(user);
             ctx.render("users/show.jte", model("page", page));
+        });
+
+        app.get("/articles", ctx -> {
+            var articles = ArticleRepository.getEntities();
+            var page = new ArticlesPage(articles);
+            ctx.render("articles/index.jte", model("page", page));
+        });
+
+        app.get("articles/build", ctx -> {
+            var page = new BuildArticlePage();
+            ctx.render("articles/build.jte", model("page", page));
+        });
+
+        app.post("/articles", ctx -> {
+            try {
+                var title = ctx.formParamAsClass("title", String.class)
+                    .check(value -> value.length() >= 2, "Название не должно быть короче двух символов")
+                    .check(value -> !ArticleRepository.existsByTitle(value), "Статья с таким названием уже существует")
+                    .get();
+
+                var content = ctx.formParamAsClass("content", String.class)
+                    .check(value -> value.length() >= 10, "Статья должна быть не короче 10 символов")
+                    .get();
+
+                var article = new Article(title, content);
+                ArticleRepository.save(article);
+                ctx.redirect("/articles");
+
+            } catch (ValidationException e) {
+                var title = ctx.formParam("title");
+                var content = ctx.formParam("content");
+                var page = new BuildArticlePage(title, content, e.getErrors());
+                ctx.render("articles/build.jte", model("page", page)).status(422);
+            }
         });
 
         return app;

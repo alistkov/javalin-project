@@ -21,6 +21,9 @@
                     <li >
                         <a href="/users">Users</a>
                     </li>
+                    <li >
+                        <a href="/articles">Articles</a>
+                    </li>
                 </ul>
             </div>
         </nav>
