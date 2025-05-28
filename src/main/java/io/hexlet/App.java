@@ -1,5 +1,7 @@
 package io.hexlet;
 
+import io.hexlet.controller.PostsController;
+import io.hexlet.controller.RootController;
 import io.hexlet.util.NamedRoutes;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
@@ -13,7 +15,10 @@ public class App {
             }
         );
 
-        app.get(NamedRoutes.homePath(), ctx -> ctx.render("index.jte"));
+        app.get(NamedRoutes.homePath(), RootController::index);
+
+        // POSTS
+        app.get(NamedRoutes.postsPath(), PostsController::index);
 
         return app;
     }
