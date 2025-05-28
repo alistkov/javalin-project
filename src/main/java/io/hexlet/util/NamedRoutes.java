@@ -14,6 +14,6 @@ public class NamedRoutes {
     }
 
     public static String postPath(String id) {
-        return "/courses/" + id;
+        return "/posts/" + id;
     }
 }

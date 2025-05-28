@@ -1,8 +1,11 @@
 package io.hexlet.controller;
 
+import io.hexlet.dto.posts.PostPage;
 import io.hexlet.dto.posts.PostsPage;
 import io.hexlet.repository.PostRepository;
 import io.javalin.http.Context;
+import io.javalin.http.NotFoundResponse;
+
 import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class PostsController {
@@ -16,4 +19,12 @@ public class PostsController {
         ctx.render("posts/index.jte", model("page", page));
     }
 
+    public static void show(Context ctx) {
+        var id = ctx.pathParamAsClass("id", Long.class).get();
+        var post = PostRepository.find(id)
+            .orElseThrow(() -> new NotFoundResponse("Post with id #" + id + " not found"));
+
+        var page = new PostPage(post);
+        ctx.render("posts/show.jte", model("page", page));
+    }
 }

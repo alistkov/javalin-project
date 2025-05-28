@@ -19,6 +19,7 @@ public class App {
 
         // POSTS
         app.get(NamedRoutes.postsPath(), PostsController::index);
+        app.get(NamedRoutes.postPath("{id}"), PostsController::show);
 
         return app;
     }
