@@ -1,16 +1,27 @@
 package io.hexlet.repository;
 
+import java.util.ArrayList;
 import java.util.List;
-import io.hexlet.model.Post;
-import io.hexlet.util.Generator;
 import java.util.Optional;
 
+import io.hexlet.model.Post;
+
 public class PostRepository {
-    private static List<Post> entities = Generator.getPosts();
+    private static List<Post> entities = new ArrayList<>();
 
     public static void save(Post post) {
-        post.setId((long) entities.size() + 1);
-        entities.add(post);
+        if (post.getId() == null) {
+            post.setId((long) entities.size() + 1);
+            entities.add(post);
+        } else {
+            entities.stream()
+                .filter(entity -> entity.getId().equals(post.getId()))
+                .findFirst()
+                .ifPresent(entity -> {
+                    entity.setName(post.getName());
+                    entity.setBody(post.getBody());
+                });
+        }
     }
 
     public static List<Post> search(String term) {
@@ -39,13 +50,6 @@ public class PostRepository {
 
     public static List<Post> getEntities() {
         return entities;
-    }
-
-    public static List<Post> findAll(int pageNumber, int pageSize) {
-        var begin = (pageNumber - 1) * pageSize;
-        var end = begin + pageSize;
-
-        return entities.stream().skip(begin).limit(end - begin).toList();
     }
 
     public static void clear() {

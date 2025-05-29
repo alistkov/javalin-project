@@ -10,8 +10,6 @@ import lombok.ToString;
 public final class Post {
 
     private Long id;
-
-    @ToString.Include
     private String name;
     private String body;
 
