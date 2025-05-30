@@ -28,7 +28,15 @@ public class NamedRoutes {
     }
 
     public static String editPath(String id) {
-        return "/post/" + id + "/edit";
+        return "/posts/" + id + "/edit";
+    }
+
+    public static String updatePath(Long id) {
+        return updatePath(String.valueOf(id));
+    }
+
+    public static String updatePath(String id) {
+        return "/posts/" + id + "/update";
     }
     // END
 }
