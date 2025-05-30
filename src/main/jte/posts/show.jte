@@ -13,7 +13,7 @@ content = @`
             ${page.getPost().getBody()}
         </div>
         <!-- BEGIN (write your solution here) -->
-
+        <a href="${NamedRoutes.editPath(page.getPost().getId())}">Edit</a>
         <!-- END -->
     </main>
 `
