@@ -5,6 +5,9 @@ import io.hexlet.controller.PostsController;
 import io.hexlet.controller.RootController;
 import io.hexlet.util.NamedRoutes;
 import io.javalin.rendering.template.JavalinJte;
+import java.util.Arrays;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 public final class App {
 
@@ -23,9 +26,15 @@ public final class App {
         app.get(NamedRoutes.postsPath(), PostsController::index);
         app.get(NamedRoutes.postPath("{id}"), PostsController::show);
 
-        // BEGIN (write your solution here)
         app.get(NamedRoutes.editPath("{id}"), PostsController::edit);
         app.post(NamedRoutes.postPath("{id}"), PostsController::update);
+
+        // BEGIN (write your solution here)
+        app.after(ctx -> {
+            var body = ctx.body();
+            var hashData = DigestUtils.sha256Hex(body);
+            ctx.header("X-Response_Digest", hashData);
+        });
         // END
 
         return app;
@@ -36,3 +45,6 @@ public final class App {
         app.start(7070);
     }
 }
+
+
+
