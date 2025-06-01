@@ -22,7 +22,6 @@ public class NamedRoutes {
         return "/posts/" + id;
     }
 
-    // BEGIN (write your solution here)
     public static String editPath(Long id) {
         return editPath(String.valueOf(id));
     }
@@ -38,5 +37,20 @@ public class NamedRoutes {
     public static String updatePath(String id) {
         return "/posts/" + id + "/update";
     }
-    // END
+
+    public static String usersPath() {
+        return "/users";
+    }
+
+    public static String userPath(Long id) {
+        return userPath(String.valueOf(id));
+    }
+
+    public static String userPath(String id) {
+        return "/users/" + id;
+    }
+
+    public static String buildUserPath() {
+        return "/users/build";
+    }
 }
